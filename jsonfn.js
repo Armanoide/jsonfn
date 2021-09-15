@@ -102,7 +102,7 @@
       if (value instanceof RegExp) {
         return '_PxEgEr_' + value;
       }
-      if (cb) {
+      if (cb && typeof cb === "function") {
         return cb(key, value);
       }
       return value;
@@ -173,7 +173,12 @@
         return eval(value.slice(8));
       }
       if (prefix === '_NuFrRa_') {
-        return eval(value.slice(8));
+        try {
+          return eval(value.slice(8))
+        } catch (e) {
+          let code = `var x = function ${value.slice(8)}; x`;
+          return eval(code);
+        }
       }
       if (prefix === '_Schema_') {
         if (value === '_Schema_String') {
